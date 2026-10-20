@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Autostart Manager</string>
+    <string name="native_not_found">Native Settings Not Found</string>
+    <string name="shizuku_connected">Shizuku Connected</string>
+    <string name="shizuku_disconnected">Shizuku Disconnected</string>
+    <string name="shizuku_grant_permission">Grant Permission</string>
+    <string name="shizuku_install_guide">Shizuku or Shevery is required for background autostart management without root.</string>
+    <string name="autostart_desc">Autostart allows applications to automatically initialize background services and sync notifications when your device boots up. Manage permissions for each application below.</string>
+    <string name="filter_all">All</string>
+    <string name="filter_allowed">Allowed</string>
+    <string name="filter_not_allowed">Not Allowed</string>
+    <string name="show_system_apps">Show system apps</string>
+    <string name="open_native_settings">Open Native Settings</string>
+    <string name="refresh">Refresh</string>
+    <string name="about">About</string>
+</resources>

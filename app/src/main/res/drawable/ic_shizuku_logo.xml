@@ -1,0 +1,41 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="48dp"
+    android:height="48dp"
+    android:viewportWidth="48"
+    android:viewportHeight="48">
+    <!-- Outer rounded frame (rx=4, ry=4, x=5.5, y=5.5, w=37, h=37) -->
+    <path
+        android:strokeColor="#FF0061A4"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 9.5,5.5 h 29 a 4,4 0 0,1 4,4 v 29 a 4,4 0 0,1 -4,4 h -29 a 4,4 0 0,1 -4,-4 v -29 a 4,4 0 0,1 4,-4 Z" />
+    <!-- Upper hexagon shield outline -->
+    <path
+        android:strokeColor="#FF0061A4"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M28.31,33.96h1.44L35.5,24l-5.75,-9.96h-11.5l-2.81,4.87" />
+    <!-- Shizuku character face & body contour -->
+    <path
+        android:strokeColor="#FF0061A4"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="m25.65,42.5l1.92,-5.28a13.3,13.3 0 0,0 0.16,-8.63l0.34,-0.62a12.13,12.13 0 0,0 1.14,-6.35a12,12 0 0,0 -5.92,0.3l-0.21,0.07a13.5,13.5 0 0,0 -3.49,-1.9h0a13.5,13.5 0 0,0 -3.91,-0.79l-0.11,-0.19a12.1,12.1 0 0,0 -4.34,-4A12,12 0 0,0 8,20.67q-0.09,0.34 -0.15,0.69a13.7,13.7 0 0,0 -2.35,1.92" />
+    <!-- Character eye 1 -->
+    <path
+        android:strokeColor="#FF0061A4"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 12.35,24.43 a 1.1,1.1 0 1,0 0,2.2 a 1.1,1.1 0 1,0 0,-2.2 Z" />
+    <!-- Character eye 2 -->
+    <path
+        android:strokeColor="#FF0061A4"
+        android:strokeWidth="1.5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 21.63,27.81 a 1.1,1.1 0 1,0 0,2.2 a 1.1,1.1 0 1,0 0,-2.2 Z" />
+</vector>
