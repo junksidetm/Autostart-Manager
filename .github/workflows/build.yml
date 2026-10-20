@@ -171,14 +171,20 @@ jobs:
           path: keystore_export/
           retention-days: 90
 
+      - name: Extract App Version
+        id: version
+        run: |
+          VERSION_NAME=$(grep -oP 'versionName\s*=\s*"\K[^"]+' app/build.gradle.kts || echo "2.1.0")
+          echo "version=$VERSION_NAME" >> $GITHUB_OUTPUT
+
       - name: Create GitHub Release (On Main Branch)
         if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v2.0.1-b${{ github.run_number }}
-          name: "Autostart Manager v2.0.1 (Build ${{ github.run_number }})"
+          tag_name: v${{ steps.version.outputs.version }}
+          name: "Autostart Manager v${{ steps.version.outputs.version }}"
           body: |
-            # Autostart Manager v2.0.1 (Build ${{ github.run_number }})
+            # Autostart Manager v${{ steps.version.outputs.version }}
 
             Universal production release APK for Autostart Manager.
 
@@ -190,14 +196,16 @@ jobs:
             - Min SDK: 26 (Android 8.0)
             - UI Framework: Jetpack Compose with Material 3 Expressive
             - Privilege Bridge: Shizuku and Shevery Binder IPC (UID 2000)
-            - Icon Design: Black foreground on white background within 66dp safe zone
+            - Icon Design: Black foreground on pure white (#FFFFFF) background within 66dp safe zone
 
             ## Release Highlights
-            - Official new monochrome icon branding adhering to Android adaptive icon safe zone specifications.
-            - Strict reboot autostart filtering: exclusively isolates and lists packages declaring boot capabilities (BOOT_COMPLETED, LOCKED_BOOT_COMPLETED, QUICKBOOT_POWERON, or RECEIVE_BOOT_COMPLETED).
-            - Full reboot control: toggles both AppOps BOOT_COMPLETED and broadcast receiver component states (pm enable / pm disable) via Shizuku.
-            - Deep native OEM intent cascade with toast fallback for Realme UI 6.0, ColorOS, HyperOS, and One UI.
-            - Real-time tri-state filtering (All, Allowed, Not Allowed) with clean flat table rows.
+            - Official pure white background icon branding adhering to Android adaptive icon safe zone specifications.
+            - Equalized pill filter headers with adaptive font scaling and guaranteed count visibility across all display widths.
+            - Context-aware directional horizontal sliding transitions when navigating between All, Allowed, and Not Allowed tabs.
+            - High-contrast Material 3 Expressive switch states for instant visual feedback.
+            - Square checkbox container for the system apps filter in options menu.
+            - Blank About page added, ready for upcoming design system implementation.
+            - Strict reboot autostart filtering declaring boot capabilities.
 
             ## Verification
             - SHA256 checksums are attached for package verification.

@@ -56,3 +56,20 @@
   - Exclusion of Non-Boot Apps: Removed general non-boot applications (e.g. offline games, static utilities) from the list.
   - Reboot Toggling via Shizuku: Full control of AppOp `BOOT_COMPLETED` (allow/ignore) and broadcast receiver component states (`pm enable/disable`).
   - Updated UI explainer copy clarifying post-reboot autonomous start and force-stop persistence.
+
+
+---
+
+## [2.1.0] - 2026-10-20 17:02:00
+- **Status:** Production Ready (100%)
+- **Release Tag:** v2.1.0
+- **Version:** 2.1.0 (versionCode 3)
+- **Changes & Improvements:**
+  - Icon Pure White Background: Changed adaptive icon canvas background and badge mask from #FEF9FF to pure #FFFFFF.
+  - Suffix Removal: Removed build number suffix from tags and releases, standardizing on v2.1.0.
+  - Equalized Pill Containers: Re-architected pill filter bar with identical 40dp height, equal weight distribution, and auto-scaled label typography so counts for All, Allowed, and Not Allowed remain visible across all screen sizes.
+  - Contextual Swipe Animation: Added directional horizontal sliding animations (`AnimatedContent`) when switching between All, Allowed, and Not Allowed tabs based on navigation direction.
+  - Switch Color Contrast: Updated on/off switch colors to high-contrast Material 3 Expressive theme specifications.
+  - Banner Simplification: Removed "Elevated AppOps..." text from Shizuku connection banner.
+  - Square Checkbox Indicator: Enhanced "Show system apps" menu item with a permanently visible square container and checkmark.
+  - Empty About Page: Added new About screen scaffold with navigation and back handler, prepared for Figma design integration.

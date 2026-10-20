@@ -72,17 +72,17 @@ fun ShizukuBanner(
                     fontWeight = FontWeight.Bold,
                     color = contentColor
                 )
-                Text(
-                    text = if (isFullyConnected) {
-                        "Elevated AppOps autostart management active"
-                    } else if (isAvailable) {
-                        "Service running. Authorization required to modify autostart"
-                    } else {
-                        "Start Shizuku or Shevery via Wireless ADB to manage autostart without root"
-                    },
-                    style = MaterialTheme.typography.bodySmall,
-                    color = contentColor.copy(alpha = 0.85f)
-                )
+                if (!isFullyConnected) {
+                    Text(
+                        text = if (isAvailable) {
+                            "Service running. Authorization required to modify autostart"
+                        } else {
+                            "Start Shizuku or Shevery via Wireless ADB to manage autostart without root"
+                        },
+                        style = MaterialTheme.typography.bodySmall,
+                        color = contentColor.copy(alpha = 0.85f)
+                    )
+                }
             }
         }
 
