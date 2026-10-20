@@ -1,10 +1,11 @@
 package com.autostart.manager.viewmodel
 
 import android.app.Application
+import android.content.ComponentName
 import android.content.Context
+import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
-import android.os.PowerManager
 import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
@@ -74,7 +75,7 @@ class AutostartViewModel(application: Application) : AndroidViewModel(applicatio
             _uiState.update { it.copy(isLoading = true) }
             val context = getApplication<Application>()
             val apps = withContext(Dispatchers.IO) {
-                loadInstalledApps(context)
+                loadBootCapableApps(context)
             }
             _uiState.update {
                 it.copy(
@@ -106,7 +107,11 @@ class AutostartViewModel(application: Application) : AndroidViewModel(applicatio
         }
 
         viewModelScope.launch {
-            val success = ShizukuManager.setAutostartAllowed(app.packageName, targetAllowed)
+            val success = ShizukuManager.setAutostartAllowed(
+                packageName = app.packageName,
+                bootReceivers = app.bootReceivers,
+                allowed = targetAllowed
+            )
             _uiState.update { state ->
                 val updated = state.allApps.map {
                     if (it.packageName == app.packageName) {
@@ -121,14 +126,51 @@ class AutostartViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
-    private suspend fun loadInstalledApps(context: Context): List<AutostartAppInfo> {
+    /**
+     * Strictly queries applications that declare boot startup capability.
+     * Excludes static calculators, offline games, and apps with zero reboot startup ability.
+     */
+    private suspend fun loadBootCapableApps(context: Context): List<AutostartAppInfo> {
         val pm = context.packageManager
-        val powerManager = context.getSystemService(Context.POWER_SERVICE) as? PowerManager
         val hasShizuku = ShizukuManager.hasPermission()
-        val restrictedPackages = if (hasShizuku) ShizukuManager.getRestrictedPackages() else emptySet()
+        val ignoredBootPackages = if (hasShizuku) ShizukuManager.getIgnoredBootPackages() else emptySet()
 
+        // 1. Resolve all broadcast receivers listening to boot and startup intents
+        val bootActions = listOf(
+            Intent.ACTION_BOOT_COMPLETED,
+            Intent.ACTION_LOCKED_BOOT_COMPLETED,
+            "android.intent.action.QUICKBOOT_POWERON",
+            "com.htc.intent.action.QUICKBOOT_POWERON"
+        )
+
+        val packageToReceivers = mutableMapOf<String, MutableList<String>>()
+
+        for (action in bootActions) {
+            try {
+                val intent = Intent(action)
+                val resolved = pm.queryBroadcastReceivers(
+                    intent,
+                    PackageManager.MATCH_DISABLED_COMPONENTS or PackageManager.GET_META_DATA
+                )
+                for (info in resolved) {
+                    val actInfo = info.activityInfo ?: continue
+                    val pkg = actInfo.packageName
+                    val compName = "${actInfo.packageName}/${actInfo.name}"
+                    val list = packageToReceivers.getOrPut(pkg) { mutableListOf() }
+                    if (!list.contains(compName)) {
+                        list.add(compName)
+                    }
+                }
+            } catch (e: Throwable) {
+                Log.e("AutostartViewModel", "Error resolving action $action", e)
+            }
+        }
+
+        // 2. Query installed packages with permissions
         val packages = try {
-            pm.getInstalledPackages(PackageManager.GET_PERMISSIONS)
+            pm.getInstalledPackages(
+                PackageManager.GET_PERMISSIONS or PackageManager.MATCH_DISABLED_COMPONENTS
+            )
         } catch (e: Throwable) {
             emptyList()
         }
@@ -142,6 +184,15 @@ class AutostartViewModel(application: Application) : AndroidViewModel(applicatio
             // Skip this app itself
             if (packageName == context.packageName) continue
 
+            val receivers = packageToReceivers[packageName] ?: emptyList()
+            val permissions = pkgInfo.requestedPermissions
+            val hasBootPerm = permissions?.contains(android.Manifest.permission.RECEIVE_BOOT_COMPLETED) == true
+
+            // STRICT FILTER: If an app has NO boot receivers AND NO boot permission, it CANNOT auto-start on reboot.
+            if (receivers.isEmpty() && !hasBootPerm) {
+                continue
+            }
+
             val appName = try {
                 appInfo.loadLabel(pm).toString()
             } catch (e: Throwable) {
@@ -150,17 +201,28 @@ class AutostartViewModel(application: Application) : AndroidViewModel(applicatio
 
             val isSystem = (appInfo.flags and ApplicationInfo.FLAG_SYSTEM) != 0
 
-            // Check if app declared RECEIVE_BOOT_COMPLETED permission
-            val permissions = pkgInfo.requestedPermissions
-            val hasBootPerm = permissions?.contains(android.Manifest.permission.RECEIVE_BOOT_COMPLETED) == true
+            // Determine if boot autostart is currently allowed or disabled
+            val isIgnoredInAppOps = ignoredBootPackages.contains(packageName)
 
-            // Determine if allowed
-            val isAllowed = if (hasShizuku) {
-                !restrictedPackages.contains(packageName)
-            } else {
-                // Fallback: check battery optimization whitelist or boot permission
-                powerManager?.isIgnoringBatteryOptimizations(packageName) == true || hasBootPerm
+            // Check if all declared boot receivers are disabled via package manager
+            var areReceiversDisabled = false
+            if (receivers.isNotEmpty()) {
+                val allDisabled = receivers.all { compString ->
+                    try {
+                        val parts = compString.split("/")
+                        if (parts.size == 2) {
+                            val state = pm.getComponentEnabledSetting(ComponentName(parts[0], parts[1]))
+                            state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED ||
+                                    state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
+                        } else false
+                    } catch (e: Throwable) {
+                        false
+                    }
+                }
+                areReceiversDisabled = allDisabled
             }
+
+            val isAllowed = !isIgnoredInAppOps && !areReceiversDisabled
 
             result.add(
                 AutostartAppInfo(
@@ -168,12 +230,12 @@ class AutostartViewModel(application: Application) : AndroidViewModel(applicatio
                     appName = appName,
                     isSystemApp = isSystem,
                     isAllowed = isAllowed,
+                    bootReceivers = receivers,
                     hasBootPermission = hasBootPerm
                 )
             )
         }
 
-        // Sort alphabetically by app name
         return result.sortedBy { it.appName.lowercase() }
     }
 }

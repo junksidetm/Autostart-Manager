@@ -27,7 +27,7 @@ jobs:
           fetch-depth: 0
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -175,28 +175,29 @@ jobs:
         if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v1.0.0-b${{ github.run_number }}
-          name: "Autostart Manager v1.0.0 (Build ${{ github.run_number }})"
+          tag_name: v2.0.1-b${{ github.run_number }}
+          name: "Autostart Manager v2.0.1 (Build ${{ github.run_number }})"
           body: |
-            # Autostart Manager v1.0.0 (Build ${{ github.run_number }})
+            # Autostart Manager v2.0.1 (Build ${{ github.run_number }})
 
             Universal production release APK for Autostart Manager.
 
             ## Overview
-            Autostart Manager audits, opens, and manages deep OEM autostart and background execution permissions across Android versions.
+            Autostart Manager audits and controls autonomous app boot startup after device reboot across Android versions.
 
             ## Technical Specifications
             - Target SDK: 35 (Android 15)
             - Min SDK: 26 (Android 8.0)
             - UI Framework: Jetpack Compose with Material 3 Expressive
             - Privilege Bridge: Shizuku and Shevery Binder IPC (UID 2000)
-            - Packaging: Universal signed APK (Signature Scheme v1 and v2)
+            - Icon Design: Black foreground on white background within 66dp safe zone
 
             ## Release Highlights
-            - Direct OEM autostart settings resolution cascade for Realme UI, ColorOS, HyperOS, OneUI, and AOSP
-            - Graceful fallback with user toast notifications
-            - Real-time tri-state auditing and toggling (All, Allowed, Not Allowed)
-            - Strict system application isolation via overflow menu
+            - Official new monochrome icon branding adhering to Android adaptive icon safe zone specifications.
+            - Strict reboot autostart filtering: exclusively isolates and lists packages declaring boot capabilities (BOOT_COMPLETED, LOCKED_BOOT_COMPLETED, QUICKBOOT_POWERON, or RECEIVE_BOOT_COMPLETED).
+            - Full reboot control: toggles both AppOps BOOT_COMPLETED and broadcast receiver component states (pm enable / pm disable) via Shizuku.
+            - Deep native OEM intent cascade with toast fallback for Realme UI 6.0, ColorOS, HyperOS, and One UI.
+            - Real-time tri-state filtering (All, Allowed, Not Allowed) with clean flat table rows.
 
             ## Verification
             - SHA256 checksums are attached for package verification.

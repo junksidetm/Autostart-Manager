@@ -43,3 +43,16 @@
   - Autostart-Manager-universal.apk.sha256
 - **Release Verification:** Verified against Android Signature Scheme v1 and v2 using apksigner.
 - **Direct Download:** https://github.com/junksidetm/Autostart-Manager/releases/tag/v1.0.0-b1
+
+---
+
+### [Production Release v2.0.1] - 2026-10-20 16:25:00 IST
+- **Status:** Production Deployed (100%)
+- **Release Tag:** v2.0.1
+- **Version:** 2.0.1 (versionCode 2)
+- **Changes & Improvements:**
+  - Official Icon Update: Implemented black foreground on off-white background adaptive icon following 66dp safe zone standards (`AutoStart Manager.svg`).
+  - Reboot Autostart Filtering: Strictly queries and displays only packages declaring `RECEIVE_BOOT_COMPLETED` or registered boot broadcast receivers (`BOOT_COMPLETED`, `LOCKED_BOOT_COMPLETED`, `QUICKBOOT_POWERON`).
+  - Exclusion of Non-Boot Apps: Removed general non-boot applications (e.g. offline games, static utilities) from the list.
+  - Reboot Toggling via Shizuku: Full control of AppOp `BOOT_COMPLETED` (allow/ignore) and broadcast receiver component states (`pm enable/disable`).
+  - Updated UI explainer copy clarifying post-reboot autonomous start and force-stop persistence.

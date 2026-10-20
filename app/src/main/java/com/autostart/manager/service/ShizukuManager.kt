@@ -63,64 +63,55 @@ object ShizukuManager {
     }
 
     /**
-     * Queries all packages where BOOT_COMPLETED, RUN_IN_BACKGROUND, or RUN_ANY_IN_BACKGROUND is ignored.
+     * Queries all packages where BOOT_COMPLETED is ignored (blocked from starting on boot).
      */
-    suspend fun getRestrictedPackages(): Set<String> = withContext(Dispatchers.IO) {
-        val restricted = mutableSetOf<String>()
-        if (!hasPermission()) return@withContext restricted
+    suspend fun getIgnoredBootPackages(): Set<String> = withContext(Dispatchers.IO) {
+        val ignored = mutableSetOf<String>()
+        if (!hasPermission()) return@withContext ignored
 
-        // 1. Query ignored BOOT_COMPLETED
         val bootOutput = execCommand(
             arrayOf("cmd", "appops", "query-op", "--user", "0", "BOOT_COMPLETED", "ignore")
         )
-        parseQueryOpOutput(bootOutput, restricted)
-
-        // 2. Query ignored RUN_IN_BACKGROUND
-        val runOutput = execCommand(
-            arrayOf("cmd", "appops", "query-op", "--user", "0", "RUN_IN_BACKGROUND", "ignore")
-        )
-        parseQueryOpOutput(runOutput, restricted)
-
-        // 3. Query ignored RUN_ANY_IN_BACKGROUND
-        val runAnyOutput = execCommand(
-            arrayOf("cmd", "appops", "query-op", "--user", "0", "RUN_ANY_IN_BACKGROUND", "ignore")
-        )
-        parseQueryOpOutput(runAnyOutput, restricted)
-
-        restricted
-    }
-
-    private fun parseQueryOpOutput(output: String, targetSet: MutableSet<String>) {
-        output.lineSequence().forEach { line ->
+        bootOutput.lineSequence().forEach { line ->
             val trimmed = line.trim()
             val pkg = trimmed.substringBefore(":").substringBefore(" ").trim()
             if (pkg.isNotEmpty() && pkg.contains(".")) {
-                targetSet.add(pkg)
+                ignored.add(pkg)
             }
         }
+        ignored
     }
 
     /**
-     * Toggles autostart status for a package.
-     * When allowed = true: sets BOOT_COMPLETED, RUN_IN_BACKGROUND, and RUN_ANY_IN_BACKGROUND to allow.
-     * When allowed = false: sets BOOT_COMPLETED, RUN_IN_BACKGROUND, and RUN_ANY_IN_BACKGROUND to ignore.
+     * Toggles reboot autostart status for a package.
+     * When allowed = false:
+     *   1. Sets BOOT_COMPLETED AppOp to ignore (system drops boot broadcast).
+     *   2. Disables the package's boot broadcast receivers via 'pm disable'.
+     * When allowed = true:
+     *   1. Sets BOOT_COMPLETED AppOp to allow.
+     *   2. Re-enables the package's boot broadcast receivers via 'pm enable'.
      */
-    suspend fun setAutostartAllowed(packageName: String, allowed: Boolean): Boolean = withContext(Dispatchers.IO) {
+    suspend fun setAutostartAllowed(
+        packageName: String,
+        bootReceivers: List<String>,
+        allowed: Boolean
+    ): Boolean = withContext(Dispatchers.IO) {
         if (!hasPermission()) return@withContext false
 
         val mode = if (allowed) "allow" else "ignore"
-        try {
-            execCommand(arrayOf("cmd", "appops", "set", packageName, "BOOT_COMPLETED", mode))
-            execCommand(arrayOf("cmd", "appops", "set", packageName, "RUN_IN_BACKGROUND", mode))
-            execCommand(arrayOf("cmd", "appops", "set", packageName, "RUN_ANY_IN_BACKGROUND", mode))
+        val pmAction = if (allowed) "enable" else "disable"
 
-            if (allowed) {
-                // If allowing, also ensure deviceidle battery exemption is added
-                execCommand(arrayOf("dumpsys", "deviceidle", "whitelist", "+$packageName"))
+        try {
+            // 1. Configure BOOT_COMPLETED AppOp
+            execCommand(arrayOf("cmd", "appops", "set", packageName, "BOOT_COMPLETED", mode))
+
+            // 2. Configure boot broadcast receivers
+            for (receiver in bootReceivers) {
+                execCommand(arrayOf("pm", pmAction, receiver))
             }
             true
         } catch (e: Throwable) {
-            Log.e(TAG, "Failed toggling autostart for $packageName", e)
+            Log.e(TAG, "Failed toggling reboot autostart for $packageName", e)
             false
         }
     }

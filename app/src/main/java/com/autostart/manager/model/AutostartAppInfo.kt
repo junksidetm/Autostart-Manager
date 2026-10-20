@@ -5,6 +5,7 @@ data class AutostartAppInfo(
     val appName: String,
     val isSystemApp: Boolean,
     val isAllowed: Boolean,
+    val bootReceivers: List<String> = emptyList(),
     val hasBootPermission: Boolean = false,
     val isLoading: Boolean = false
 )

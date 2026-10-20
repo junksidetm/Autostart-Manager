@@ -156,7 +156,7 @@ fun HomeScreen(
 
                 // Brief paragraph about what Autostart is and what the app does
                 Text(
-                    text = "Autostart is an Android feature that allows apps to start automatically after a reboot to fetch, download, and push messages. You can audit and toggle autostart permissions for each installed app below.",
+                    text = "Autostart controls which apps can launch automatically after a device reboot. When turned off, the app remains in a force-stopped state after reboot and will not run until you open it manually. Manage permissions below.",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
