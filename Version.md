@@ -73,3 +73,14 @@
   - Banner Simplification: Removed "Elevated AppOps..." text from Shizuku connection banner.
   - Square Checkbox Indicator: Enhanced "Show system apps" menu item with a permanently visible square container and checkmark.
   - Empty About Page: Added new About screen scaffold with navigation and back handler, prepared for Figma design integration.
+
+
+---
+
+## [3.2.0] - 2026-10-20 17:26:50
+- **Status:** Production Ready (100%)
+- **Release Tag:** v3.2.0
+- **Version:** 3.2.0 (versionCode 4)
+- **Changes & Improvements:**
+  - Decoupled Autostart from Battery State: Verified and reinforced that reboot autostart operations (BOOT_COMPLETED AppOp and boot receiver components) operate completely independent of runtime background battery permissions.
+  - Strict Boundary Isolation: Ensured no runtime AppOps (such as RUN_ANY_IN_BACKGROUND) or Doze whitelists are ever modified by Autostart Manager, preserving user-configured Unrestricted or Optimized battery modes in Battery Mode Checker.
