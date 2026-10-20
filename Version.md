@@ -29,3 +29,17 @@
   - AppAutostartRow: Clean flat list row with asynchronous app icon loading and instant toggle switch.
   - HomeScreen: Center-aligned top bar, overflow menu with system app filter, Shizuku banner, and explainer section.
   - Build Workflow: GitHub Actions production pipeline with persistent 2048-bit RSA signing.
+
+---
+
+### [Production Release v1.0.0-b1] - 2026-10-20 14:54:00 IST
+- **Status:** Production Deployed (100%)
+- **Release Tag:** v1.0.0-b1
+- **GitHub Run:** 39399908039
+- **Build Duration:** 3m 34s
+- **Keystore Branch:** origin/ci-keystore (Permanent RSA 2048-bit production signing key stored)
+- **Artifacts:**
+  - Autostart-Manager-universal.apk
+  - Autostart-Manager-universal.apk.sha256
+- **Release Verification:** Verified against Android Signature Scheme v1 and v2 using apksigner.
+- **Direct Download:** https://github.com/junksidetm/Autostart-Manager/releases/tag/v1.0.0-b1
