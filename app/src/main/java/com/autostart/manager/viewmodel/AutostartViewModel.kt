@@ -134,6 +134,7 @@ class AutostartViewModel(application: Application) : AndroidViewModel(applicatio
         val pm = context.packageManager
         val hasShizuku = ShizukuManager.hasPermission()
         val ignoredBootPackages = if (hasShizuku) ShizukuManager.getIgnoredBootPackages() else emptySet()
+        val disabledComponentsFromShizuku = if (hasShizuku) ShizukuManager.getDisabledReceiverComponents() else emptySet()
 
         // 1. Resolve all broadcast receivers listening to boot and startup intents
         val bootActions = listOf(
@@ -204,19 +205,23 @@ class AutostartViewModel(application: Application) : AndroidViewModel(applicatio
             // Determine if boot autostart is currently allowed or disabled
             val isIgnoredInAppOps = ignoredBootPackages.contains(packageName)
 
-            // Check if all declared boot receivers are disabled via package manager
+            // Check if all declared boot receivers are disabled via package manager or Shizuku shell
             var areReceiversDisabled = false
             if (receivers.isNotEmpty()) {
                 val allDisabled = receivers.all { compString ->
-                    try {
-                        val parts = compString.split("/")
-                        if (parts.size == 2) {
-                            val state = pm.getComponentEnabledSetting(ComponentName(parts[0], parts[1]))
-                            state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED ||
-                                    state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
-                        } else false
-                    } catch (e: Throwable) {
-                        false
+                    if (hasShizuku && disabledComponentsFromShizuku.isNotEmpty()) {
+                        disabledComponentsFromShizuku.contains(compString)
+                    } else {
+                        try {
+                            val parts = compString.split("/")
+                            if (parts.size == 2) {
+                                val state = pm.getComponentEnabledSetting(ComponentName(parts[0], parts[1]))
+                                state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED ||
+                                        state == PackageManager.COMPONENT_ENABLED_STATE_DISABLED_USER
+                            } else false
+                        } catch (e: Throwable) {
+                            false
+                        }
                     }
                 }
                 areReceiversDisabled = allDisabled

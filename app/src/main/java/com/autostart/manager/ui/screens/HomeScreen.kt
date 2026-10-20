@@ -201,7 +201,7 @@ fun HomeScreen(
 
                 // Brief paragraph about what Autostart is and what the app does
                 Text(
-                    text = "Autostart controls which apps can launch automatically after a device reboot. When turned off, the app remains in a force-stopped state after reboot and will not run until you open it manually. Manage permissions below.",
+                    text = "Autostart controls which apps can launch automatically after a device reboot. When turned off, the app's boot receivers are disabled at the package manager level, ensuring it remains dormant after restart until opened manually. On Realme UI / ColorOS, this permanently overrides OEM Auto-Launch restrictions.",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )

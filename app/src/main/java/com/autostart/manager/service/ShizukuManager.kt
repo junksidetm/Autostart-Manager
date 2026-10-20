@@ -83,6 +83,30 @@ object ShizukuManager {
     }
 
     /**
+     * Queries disabled receiver components across the system via elevated Shizuku shell.
+     */
+    suspend fun getDisabledReceiverComponents(): Set<String> = withContext(Dispatchers.IO) {
+        val disabled = mutableSetOf<String>()
+        if (!hasPermission()) return@withContext disabled
+
+        val actions = listOf(
+            "android.intent.action.BOOT_COMPLETED",
+            "android.intent.action.LOCKED_BOOT_COMPLETED",
+            "android.intent.action.QUICKBOOT_POWERON"
+        )
+        for (action in actions) {
+            val output = execCommand(arrayOf("pm", "query-receivers", "-d", "--components", "-a", action))
+            output.lineSequence().forEach { line ->
+                val trimmed = line.trim()
+                if (trimmed.contains("/")) {
+                    disabled.add(trimmed)
+                }
+            }
+        }
+        disabled
+    }
+
+    /**
      * Toggles reboot autostart status for a package.
      * When allowed = false:
      *   1. Sets BOOT_COMPLETED AppOp to ignore (system drops boot broadcast).
