@@ -196,3 +196,13 @@
   - `app/build.gradle.kts`: Configured `versionCode = 5` and `versionName = "3.3.0"`.
   - `Version.md`: Appended tracking entry.
 - **Status**: 100% (Ready for Release Publication)
+
+
+## [2026-10-21 10:14:00 IST] - Version 3.4.0: Home Screen Dark Mode Icon Color Flipping & Scale Optimization
+- **Action**: Upgraded application release version to v3.4.0 (versionCode 6) with dynamic dark mode color flipping for top-left brand navigation icon and safe-area scale compensation.
+- **Components Created & Modified**:
+  - `app/src/main/res/drawable/ic_launcher_foreground_dark.xml`: Created inverted SVG vector drawable where phone frame, stacked layers, and reload icon flip from black (#000000) to pure white (#FFFFFF), and badge background flips from white (#FFFFFF) to black (#000000).
+  - `app/src/main/res/drawable-night/ic_launcher_foreground.xml`: Configured Android night qualifier resource for system-level dark mode resolution.
+  - `app/src/main/java/com/autostart/manager/ui/screens/HomeScreen.kt`: Added `navigationIcon` in `CenterAlignedTopAppBar` utilizing `isSystemInDarkTheme()` to dynamically swap between light and dark foreground assets, enlarged icon frame to 52dp, and applied 1.3x scale to compensate for the 66px circular safe zone margins.
+  - `app/build.gradle.kts`: Bumped `versionCode = 6` and `versionName = "3.4.0"`.
+- **Status**: 100% (Completed & Verified)

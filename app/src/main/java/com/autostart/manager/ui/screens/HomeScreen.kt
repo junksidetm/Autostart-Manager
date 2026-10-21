@@ -8,8 +8,10 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -47,10 +49,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.autostart.manager.R
 import com.autostart.manager.model.AutostartAppInfo
 import com.autostart.manager.model.AutostartFilter
 import com.autostart.manager.ui.components.AppAutostartRow
@@ -82,6 +87,20 @@ fun HomeScreen(
                         text = "Autostart Manager",
                         style = MaterialTheme.typography.titleLarge,
                         fontWeight = FontWeight.Bold
+                    )
+                },
+                navigationIcon = {
+                    val isDark = isSystemInDarkTheme()
+                    Image(
+                        painter = painterResource(
+                            id = if (isDark) R.drawable.ic_launcher_foreground_dark
+                            else R.drawable.ic_launcher_foreground
+                        ),
+                        contentDescription = "App Icon",
+                        modifier = Modifier
+                            .padding(start = 8.dp)
+                            .size(52.dp)
+                            .scale(1.3f)
                     )
                 },
                 actions = {

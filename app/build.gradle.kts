@@ -12,8 +12,8 @@ android {
         applicationId = "com.autostart.manager"
         minSdk = 26
         targetSdk = 35
-        versionCode = 5
-        versionName = "3.3.0"
+        versionCode = 6
+        versionName = "3.4.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
