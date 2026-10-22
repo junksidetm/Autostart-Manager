@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="filter_all">Todas</string>
+    <string name="filter_allowed">Permitidas</string>
+    <string name="filter_not_allowed">No permitidas</string>
+    <plurals name="boot_receivers">
+        <item quantity="one">%1$d receptor de arranque</item>
+        <item quantity="other">%1$d receptores de arranque</item>
+    </plurals>
+
+    <string name="search_hint">Buscar apps</string>
+    <string name="more_options">Más opciones</string>
+    <string name="menu_refresh">Actualizar</string>
+    <string name="menu_show_system">Mostrar apps del sistema</string>
+    <string name="menu_auto_launch">Inicio automático de Realme</string>
+    <string name="menu_guide">Guía</string>
+    <string name="menu_about">Acerca de</string>
+    <string name="empty_category">No hay apps aquí</string>
+
+    <string name="shizuku_ready_title">Shizuku conectado</string>
+    <string name="shizuku_ready_body">Mostrando el estado real de los receptores. Usa el interruptor para cambiar el inicio automático.</string>
+    <string name="shizuku_permission_title">Shizuku necesita permiso</string>
+    <string name="shizuku_permission_body">Permite el acceso para leer y cambiar los receptores de arranque.</string>
+    <string name="shizuku_offline_title">Modo de solo lectura</string>
+    <string name="shizuku_offline_body">Shizuku no se está ejecutando, así que algunos receptores pueden estar ocultos y los interruptores están bloqueados.</string>
+
+    <string name="action_grant">Permitir</string>
+    <string name="action_get">Obtener</string>
+    <string name="action_got_it">Entendido</string>
+    <string name="action_close">Cerrar</string>
+
+    <string name="guide_title">Inicio automático</string>
+    <string name="guide_body">Permitida — los receptores de arranque están activos, así que Android la despierta tras reiniciar. Notificaciones y widgets funcionan al instante, a cambio de un arranque más lento y caliente.\n\nNo permitida — sus receptores están desactivados en el gestor de paquetes. La app sigue cerrada (0 RAM, 0 CPU) hasta que la abras y no envía notificaciones hasta entonces.\n\nMantén permitidas: alarmas, tus mensajeros principales, apps de reloj inteligente, monitores de salud. Puedes bloquear: compras, redes sociales, juegos y utilidades ocasionales.\n\nRealme UI / ColorOS: com.oplus.safecenter puede descartar los avisos de arranque de apps desactivadas en su propia lista de Inicio automático. Si una app permitida no arranca tras reiniciar, actívala también allí (menú → Inicio automático de Realme).\n\nLas apps que forzaste a detenerse no reciben el aviso de arranque hasta abrirlas una vez.\n\nEl inicio automático solo trata de arrancar tras reiniciar. Cómo se trata una app en ejecución es tarea de Battery Mode Checker.</string>
+    <string name="about_body">Versión %1$s\n\nCreado por Mrdarkside (Abhijeet Yadav)\nmrdarksidetm@gmail.com\n\nUna sola tarea: mostrar qué apps pueden iniciarse tras reiniciar y controlar sus receptores de arranque con Shizuku. Sin servicios en segundo plano ni analíticas.</string>
+
+    <string name="msg_load_failed">No se pudieron cargar las apps: %1$s</string>
+    <string name="msg_autostart_refused">El sistema no permitió cambiar el inicio automático de %1$s</string>
+    <string name="msg_switch_failed">Error al cambiar: %1$s</string>
+    <string name="msg_no_app">Ninguna app puede abrir esto</string>
+</resources>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="filter_all">全部</string>
+    <string name="filter_allowed">已允许</string>
+    <string name="filter_not_allowed">不允许</string>
+    <plurals name="boot_receivers">
+        <item quantity="other">%1$d 个开机接收器</item>
+    </plurals>
+
+    <string name="search_hint">搜索应用</string>
+    <string name="more_options">更多选项</string>
+    <string name="menu_refresh">刷新</string>
+    <string name="menu_show_system">显示系统应用</string>
+    <string name="menu_auto_launch">Realme 自启动</string>
+    <string name="menu_guide">指南</string>
+    <string name="menu_about">关于</string>
+    <string name="empty_category">这里没有应用</string>
+
+    <string name="shizuku_ready_title">Shizuku 已连接</string>
+    <string name="shizuku_ready_body">显示接收器的真实状态。拨动开关即可更改自启动。</string>
+    <string name="shizuku_permission_title">Shizuku 需要授权</string>
+    <string name="shizuku_permission_body">允许访问以读取和更改开机接收器。</string>
+    <string name="shizuku_offline_title">只读模式</string>
+    <string name="shizuku_offline_body">Shizuku 未运行，部分开机接收器可能不可见，开关已锁定。</string>
+
+    <string name="action_grant">授权</string>
+    <string name="action_get">获取</string>
+    <string name="action_got_it">知道了</string>
+    <string name="action_close">关闭</string>
+
+    <string name="guide_title">自启动</string>
+    <string name="guide_body">已允许 — 应用的开机接收器已启用，重启后 Android 会唤醒它。通知和小组件立即可用，但开机会更慢、更热。\n\n不允许 — 它的开机接收器已在软件包管理器中停用。应用在你打开之前一直保持关闭（0 内存，0 CPU），在此之前也不会发送通知。\n\n建议允许：闹钟、主要聊天应用、智能手表配套应用、健康监测。可放心阻止：购物、社交、游戏和偶尔使用的工具。\n\nRealme UI / ColorOS：com.oplus.safecenter 仍可能丢弃其自启动列表中被关闭应用的开机广播。如果已允许的应用重启后没有启动，请也在那里开启（菜单 → Realme 自启动）。\n\n被强行停止的应用在打开一次之前不会收到开机广播。\n\n自启动只关乎重启后的启动。应用运行时如何被对待，是 Battery Mode Checker 的工作。</string>
+    <string name="about_body">版本 %1$s\n\n作者：Mrdarkside (Abhijeet Yadav)\nmrdarksidetm@gmail.com\n\n只做一件事：显示哪些应用能在重启后启动，并通过 Shizuku 控制它们的开机接收器。无后台服务，无统计分析。</string>
+
+    <string name="msg_load_failed">无法加载应用：%1$s</string>
+    <string name="msg_autostart_refused">系统拒绝更改 %1$s 的自启动</string>
+    <string name="msg_switch_failed">切换失败：%1$s</string>
+    <string name="msg_no_app">没有应用可以打开此内容</string>
+</resources>

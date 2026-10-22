@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="filter_all">Toutes</string>
+    <string name="filter_allowed">Autorisées</string>
+    <string name="filter_not_allowed">Non autorisées</string>
+    <plurals name="boot_receivers">
+        <item quantity="one">%1$d récepteur de démarrage</item>
+        <item quantity="other">%1$d récepteurs de démarrage</item>
+    </plurals>
+
+    <string name="search_hint">Rechercher des applis</string>
+    <string name="more_options">Plus d\'options</string>
+    <string name="menu_refresh">Actualiser</string>
+    <string name="menu_show_system">Afficher les applis système</string>
+    <string name="menu_auto_launch">Lancement auto Realme</string>
+    <string name="menu_guide">Guide</string>
+    <string name="menu_about">À propos</string>
+    <string name="empty_category">Aucune appli ici</string>
+
+    <string name="shizuku_ready_title">Shizuku connecté</string>
+    <string name="shizuku_ready_body">État réel des récepteurs affiché. Basculez un interrupteur pour changer le démarrage auto.</string>
+    <string name="shizuku_permission_title">Shizuku a besoin d\'une autorisation</string>
+    <string name="shizuku_permission_body">Autorisez l\'accès pour lire et modifier les récepteurs de démarrage.</string>
+    <string name="shizuku_offline_title">Mode lecture seule</string>
+    <string name="shizuku_offline_body">Shizuku n\'est pas lancé : certains récepteurs peuvent être masqués et les interrupteurs sont verrouillés.</string>
+
+    <string name="action_grant">Autoriser</string>
+    <string name="action_get">Obtenir</string>
+    <string name="action_got_it">Compris</string>
+    <string name="action_close">Fermer</string>
+
+    <string name="guide_title">Démarrage auto</string>
+    <string name="guide_body">Autorisée — les récepteurs de démarrage de l\'appli sont actifs, donc Android la réveille après un redémarrage. Notifications et widgets fonctionnent tout de suite, au prix d\'un démarrage plus lent et plus chaud.\n\nNon autorisée — ses récepteurs sont désactivés dans le gestionnaire de paquets. L\'appli reste arrêtée (0 RAM, 0 CPU) jusqu\'à ce que vous l\'ouvriez, sans notifications d\'ici là.\n\nÀ garder autorisées : réveils, messageries principales, applis de montre connectée, moniteurs de santé. Sans risque à bloquer : shopping, réseaux sociaux, jeux et utilitaires ponctuels.\n\nRealme UI / ColorOS : com.oplus.safecenter peut encore ignorer les diffusions de démarrage des applis désactivées dans sa propre liste de lancement auto. Si une appli autorisée ne démarre pas après redémarrage, activez-la aussi là-bas (menu → Lancement auto Realme).\n\nLes applis arrêtées de force ne reçoivent plus la diffusion de démarrage tant qu\'elles n\'ont pas été ouvertes une fois.\n\nLe démarrage auto concerne seulement le lancement après redémarrage. Le traitement d\'une appli en cours d\'exécution relève de Battery Mode Checker.</string>
+    <string name="about_body">Version %1$s\n\nCréé par Mrdarkside (Abhijeet Yadav)\nmrdarksidetm@gmail.com\n\nUne seule tâche : montrer quelles applis peuvent démarrer après un redémarrage et contrôler leurs récepteurs via Shizuku. Aucun service en arrière-plan, aucune analyse.</string>
+
+    <string name="msg_load_failed">Impossible de charger les applis : %1$s</string>
+    <string name="msg_autostart_refused">Le système a refusé de changer le démarrage auto de %1$s</string>
+    <string name="msg_switch_failed">Échec du changement : %1$s</string>
+    <string name="msg_no_app">Aucune appli ne peut ouvrir ceci</string>
+</resources>

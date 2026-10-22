@@ -66,20 +66,12 @@ object ShizukuManager {
      * Queries all packages where BOOT_COMPLETED is ignored (blocked from starting on boot).
      */
     suspend fun getIgnoredBootPackages(): Set<String> = withContext(Dispatchers.IO) {
-        val ignored = mutableSetOf<String>()
-        if (!hasPermission()) return@withContext ignored
+        if (!hasPermission()) return@withContext emptySet()
 
         val bootOutput = execCommand(
             arrayOf("cmd", "appops", "query-op", "--user", "0", "BOOT_COMPLETED", "ignore")
         )
-        bootOutput.lineSequence().forEach { line ->
-            val trimmed = line.trim()
-            val pkg = trimmed.substringBefore(":").substringBefore(" ").trim()
-            if (pkg.isNotEmpty() && pkg.contains(".")) {
-                ignored.add(pkg)
-            }
-        }
-        ignored
+        AutostartParser.parsePackageList(bootOutput)
     }
 
     /**
@@ -96,12 +88,7 @@ object ShizukuManager {
         )
         for (action in actions) {
             val output = execCommand(arrayOf("pm", "query-receivers", "-d", "--components", "-a", action))
-            output.lineSequence().forEach { line ->
-                val trimmed = line.trim()
-                if (trimmed.contains("/")) {
-                    disabled.add(trimmed)
-                }
-            }
+            disabled.addAll(AutostartParser.parseComponents(output))
         }
         disabled
     }
@@ -114,6 +101,8 @@ object ShizukuManager {
      * When allowed = true:
      *   1. Sets BOOT_COMPLETED AppOp to allow.
      *   2. Re-enables the package's boot broadcast receivers via 'pm enable'.
+     * 
+     * Uses defensive regex sanitization and transactional single-shell execution.
      */
     suspend fun setAutostartAllowed(
         packageName: String,
@@ -121,18 +110,15 @@ object ShizukuManager {
         allowed: Boolean
     ): Boolean = withContext(Dispatchers.IO) {
         if (!hasPermission()) return@withContext false
-
-        val mode = if (allowed) "allow" else "ignore"
-        val pmAction = if (allowed) "enable" else "disable"
+        if (!AutostartParser.isPackageName(packageName)) {
+            Log.e(TAG, "Rejected invalid package name: $packageName")
+            return@withContext false
+        }
 
         try {
-            // 1. Configure BOOT_COMPLETED AppOp
-            execCommand(arrayOf("cmd", "appops", "set", packageName, "BOOT_COMPLETED", mode))
-
-            // 2. Configure boot broadcast receivers
-            for (receiver in bootReceivers) {
-                execCommand(arrayOf("pm", pmAction, receiver))
-            }
+            val validReceivers = bootReceivers.mapNotNull { AutostartParser.normalize(it) }
+            val batchCommand = AutostartParser.switchCommand(packageName, validReceivers, allowed)
+            execCommand(arrayOf("sh", "-c", "exec 2>&1; $batchCommand"))
             true
         } catch (e: Throwable) {
             Log.e(TAG, "Failed toggling reboot autostart for $packageName", e)

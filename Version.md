@@ -213,3 +213,30 @@
 - **Components Modified**:
   - `.github/workflows/build.yml`: Configured `name: "v${{ steps.version.outputs.version }}"` under release creation action.
 - **Status**: 100% (Completed & Verified)
+
+
+## [2026-10-22 09:55:00 IST] - Version 3.5.0: Pure-Logic Parser, Command Injection Defense, JVM Unit Tests, Transactional Batching & Multi-Language Localization
+- **Version**: 3.5.0 (versionCode 7)
+- **Status**: 100% (Completed & Verified)
+- **Core Architecture & Security Enhancements**:
+  - `AutostartParser.kt`: Created decoupled, pure-Kotlin domain parser isolating component parsing (`parseComponents`, `parsePackageList`), component normalization (`normalize`), and strict defensive regex sanitization (`isPackageName`) to completely prevent privileged shell command injection vulnerabilities.
+  - `ShizukuManager.kt`: Integrated defensive package validation via `AutostartParser.isPackageName` before executing privileged commands. Upgraded `setAutostartAllowed` to batch AppOps toggling and component state changes into a single transactional shell transaction (`AutostartParser.switchCommand`), eliminating Binder IPC overhead and latency.
+  - `AutostartParserTest.kt`: Added JUnit 4 unit test suite (`app/src/test/java/com/autostart/manager/service/AutostartParserTest.kt`) covering component normalization (short syntax, inner classes `$Receiver`), injection rejection (`; reboot`), "No receivers found" handling, and snapshot evaluation.
+  - CI/CD Test Pipeline: Integrated `Run Unit Tests` (`./gradlew testReleaseUnitTest`) into `.github/workflows/build.yml` before release APK assembly.
+  - Universal Monolithic APK Packaging: Added `bundle { language { enableSplit = false } density { enableSplit = false } abi { enableSplit = false } }` to `app/build.gradle.kts`, guaranteeing all resources are embedded in a single universal `.apk` without split-APK or `.apkm` generation.
+  - Multi-Language Localization (5 Locales): Added localized `strings.xml` for German (`values-de`), Spanish (`values-es`), French (`values-fr`), Hindi (`values-hi`), and Simplified Chinese (`values-zh-rCN`), expanding global accessibility.
+- **Files Created**:
+  - `app/src/main/java/com/autostart/manager/service/AutostartParser.kt`
+  - `app/src/test/java/com/autostart/manager/service/AutostartParserTest.kt`
+  - `app/src/main/res/values-de/strings.xml`
+  - `app/src/main/res/values-es/strings.xml`
+  - `app/src/main/res/values-fr/strings.xml`
+  - `app/src/main/res/values-hi/strings.xml`
+  - `app/src/main/res/values-zh-rCN/strings.xml`
+- **Files Modified**:
+  - `app/build.gradle.kts`
+  - `gradle/libs.versions.toml`
+  - `app/src/main/java/com/autostart/manager/service/ShizukuManager.kt`
+  - `app/src/main/res/values/strings.xml`
+  - `.github/workflows/build.yml`
+  - `Version.md`

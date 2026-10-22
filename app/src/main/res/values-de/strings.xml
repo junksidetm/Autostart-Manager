@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="filter_all">Alle</string>
+    <string name="filter_allowed">Erlaubt</string>
+    <string name="filter_not_allowed">Nicht erlaubt</string>
+    <plurals name="boot_receivers">
+        <item quantity="one">%1$d Boot-Receiver</item>
+        <item quantity="other">%1$d Boot-Receiver</item>
+    </plurals>
+
+    <string name="search_hint">Apps suchen</string>
+    <string name="more_options">Weitere Optionen</string>
+    <string name="menu_refresh">Aktualisieren</string>
+    <string name="menu_show_system">System-Apps anzeigen</string>
+    <string name="menu_auto_launch">Realme Autostart</string>
+    <string name="menu_guide">Anleitung</string>
+    <string name="menu_about">Über</string>
+    <string name="empty_category">Keine Apps hier</string>
+
+    <string name="shizuku_ready_title">Shizuku verbunden</string>
+    <string name="shizuku_ready_body">Zeigt den echten Receiver-Zustand. Schalter umlegen, um Autostart zu ändern.</string>
+    <string name="shizuku_permission_title">Shizuku braucht eine Berechtigung</string>
+    <string name="shizuku_permission_body">Erlaube den Zugriff, um Boot-Receiver zu lesen und zu ändern.</string>
+    <string name="shizuku_offline_title">Nur-Lesen-Modus</string>
+    <string name="shizuku_offline_body">Shizuku läuft nicht, daher können manche Boot-Receiver verborgen sein und die Schalter sind gesperrt.</string>
+
+    <string name="action_grant">Erlauben</string>
+    <string name="action_get">Holen</string>
+    <string name="action_got_it">Verstanden</string>
+    <string name="action_close">Schließen</string>
+
+    <string name="guide_title">Autostart</string>
+    <string name="guide_body">Erlaubt — die Boot-Receiver der App sind aktiv, also weckt Android sie nach einem Neustart. Benachrichtigungen und Widgets funktionieren sofort, der Start wird aber langsamer und wärmer.\n\nNicht erlaubt — ihre Boot-Receiver sind im Paketmanager deaktiviert. Die App bleibt aus (0 RAM, 0 CPU), bis du sie öffnest, und sendet bis dahin keine Benachrichtigungen.\n\nErlaubt lassen: Wecker, deine wichtigsten Messenger, Smartwatch-Begleiter, Gesundheitsmonitore. Sicher zu blockieren: Shopping, Social Media, Spiele und gelegentliche Tools.\n\nRealme UI / ColorOS: com.oplus.safecenter kann Boot-Broadcasts für Apps verwerfen, die in seiner eigenen Autostart-Liste aus sind. Startet eine erlaubte App nach dem Neustart nicht, schalte sie dort ebenfalls ein (Menü → Realme Autostart).\n\nZwangsweise beendete Apps erhalten erst nach einmaligem Öffnen wieder Boot-Broadcasts.\n\nAutostart betrifft nur den Start nach einem Neustart. Wie eine laufende App behandelt wird, regelt Battery Mode Checker.</string>
+    <string name="about_body">Version %1$s\n\nErstellt von Mrdarkside (Abhijeet Yadav)\nmrdarksidetm@gmail.com\n\nEine Aufgabe: zeigen, welche Apps nach einem Neustart starten können, und ihre Boot-Receiver über Shizuku steuern. Keine Hintergrunddienste, keine Analysen.</string>
+
+    <string name="msg_load_failed">Apps konnten nicht geladen werden: %1$s</string>
+    <string name="msg_autostart_refused">Das System hat den Autostart von %1$s nicht geändert</string>
+    <string name="msg_switch_failed">Wechsel fehlgeschlagen: %1$s</string>
+    <string name="msg_no_app">Keine App kann dies öffnen</string>
+</resources>
